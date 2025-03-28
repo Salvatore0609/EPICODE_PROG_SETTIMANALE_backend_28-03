@@ -34,35 +34,27 @@ public class PrestitoDAO {
         em.merge(prestito);
     }
 
+    // Ricerca di un prestito dato l'ID
+    public Prestito findById(Long id) {
+        return em.find(Prestito.class, id);
+    }
+
     // Ricerca dei prestiti attivi per un utente dato il numero di tessera
     public List<Prestito> findPrestitiAttiviPerUtente(String numeroTessera) {
-        List<Prestito> prestiti = em.createQuery(
-                        "SELECT p FROM Prestito p WHERE p.utente.numeroTessera = :numeroTessera AND p.dataRestituzioneEffettiva IS NULL", Prestito.class)
-                .setParameter("numeroTessera", numeroTessera)
+        return em.createQuery("SELECT p FROM Prestito p WHERE p.utente.numeroTessera = :tessera " +
+                                "AND (p.dataRestituzioneEffettiva IS NULL OR p.dataRestituzioneEffettiva > CURRENT_DATE)",
+                        Prestito.class)
+                .setParameter("tessera", numeroTessera)
                 .getResultList();
-
-        // Log per vedere cosa restituisce la query
-        /*System.out.println("Prestiti attivi per utente " + numeroTessera + ": " + prestiti.size());
-        prestiti.forEach(p -> {
-            System.out.println("Prestito attivo trovato: ID = " + p.getId() + ", Data inizio: " + p.getDataInizioPrestito() +
-                    ", Data fine: " + p.getDataFinePrestito());
-        });*/
-        return prestiti;
     }
 
     // Ricerca dei prestiti scaduti e non restituiti
     public List<Prestito> findPrestitiScadutiNonRestituiti() {
-        List<Prestito> prestiti = em.createQuery(
-                        "SELECT p FROM Prestito p WHERE p.dataRestituzioneEffettiva IS NULL AND p.dataRestituzionePrevista < :oggi", Prestito.class)
-                .setParameter("oggi", LocalDate.now())
+        return em.createQuery("SELECT p FROM Prestito p WHERE p.dataRestituzionePrevista < CURRENT_DATE " +
+                                "AND p.dataRestituzioneEffettiva IS NULL",
+                        Prestito.class)
                 .getResultList();
-
-        // Log per vedere cosa restituisce la query
-        /*System.out.println("Prestiti scaduti non restituiti: " + prestiti.size());
-        prestiti.forEach(p -> {
-            System.out.println("Prestito scaduto non restituito trovato: ID = " + p.getId() + ", Data restituzione prevista: " +
-                    p.getDataRestituzionePrevista());
-        });*/
-        return prestiti;
     }
+
+
 }

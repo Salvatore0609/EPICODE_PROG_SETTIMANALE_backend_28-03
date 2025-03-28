@@ -14,6 +14,7 @@ import it.epicode.utenti.Utente;
 import it.epicode.utenti.UtenteDAO;
 import jakarta.persistence.EntityManager;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public class BibliotecaService {
@@ -126,7 +127,7 @@ public class BibliotecaService {
 
     // Ricerca per anno di pubblicazione
     public List<Libro> ricercaPerAnnoPubblicazione(int anno) {
-        return libroDAO.findByAnnoPubblicazione(anno);
+        return libroDAO.findByAnno(anno);
     }
 
     // Ricerca per titolo (parziale)
@@ -162,4 +163,14 @@ public class BibliotecaService {
     public List<Prestito> ricercaPrestitiScadutiNonRestituiti() {
         return prestitoDAO.findPrestitiScadutiNonRestituiti();
     }
+
+    //METODO PER RESTITUIRE UN PRESTITO
+    public void restituisciPrestito(Long prestitoId) {
+        Prestito prestito = em.find(Prestito.class, prestitoId);
+        if (prestito != null) {
+            prestito.setDataRestituzioneEffettiva(LocalDate.now());
+            prestitoDAO.update(prestito);
+        }
+    }
+
 }

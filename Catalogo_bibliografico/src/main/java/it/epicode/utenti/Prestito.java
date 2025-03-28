@@ -29,7 +29,7 @@ public class Prestito {
     @JoinColumn(name = "utente_id", nullable = false)
     private Utente utente;
 
-    // ELEMENTO PRESTATO 
+    // ELEMENTO PRESTATO
 
     //Prestito M ──────────────── 1 Libro
     //

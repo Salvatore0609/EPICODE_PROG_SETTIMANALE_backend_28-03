@@ -24,39 +24,61 @@ public class Main {
 
         em.getTransaction().begin();
 
-        // Aggiungi un autore
+
         Autore autore1 = new Autore(null, "Mario", "Rossi");
+        Autore autore2 = new Autore(null, "Gianni", "Verdi");
         bibliotecaService.aggiungiAutore(autore1);
+        bibliotecaService.aggiungiAutore(autore2);
 
-        // Aggiungi una casa editrice
+
         CasaEditrice casaEditrice1 = new CasaEditrice(null, "Mondadori");
+        CasaEditrice casaEditrice2 = new CasaEditrice(null, "Panini");
         bibliotecaService.aggiungiCasaEditrice(casaEditrice1);
+        bibliotecaService.aggiungiCasaEditrice(casaEditrice2);
 
-        // Aggiungi un libro
+
         Libro libro1 = new Libro("1234567890123", "Il Signore degli Anelli", 1954, 500, autore1, casaEditrice1, "Fantasy");
+        Libro libro2 = new Libro("9876543210987", "Harry Potter e il calice di fuoco", 1997, 400, autore2, casaEditrice2, "Fantasy");
         bibliotecaService.aggiungiLibro(libro1);
+        bibliotecaService.aggiungiLibro(libro2);
 
-        // Aggiungi una rivista
         Rivista rivista1 = new Rivista("9876543210987", "National Geographic", 2023, 100, Periodicita.MENSILE);
+        Rivista rivista2 = new Rivista("1234567890123", "Cosmopolitan", 2023, 80, Periodicita.SETTIMANALE);
         bibliotecaService.aggiungiRivista(rivista1);
+        bibliotecaService.aggiungiRivista(rivista2);
 
         //-------------------------------------
 
-        // Aggiungi un utente
-        Utente utente1 = new Utente(null, "Salvatore", "Sale", LocalDate.of(1998, 1, 1), "TESSERA123", null);
-        bibliotecaService.aggiungiUtente(utente1);
 
-        // Aggiungi prestiti
-        Prestito prestito1 = new Prestito(null, utente1, libro1, rivista1, LocalDate.of(2024, 1, 1), LocalDate.of(2024, 4, 1), LocalDate.of(2024, 5, 1), LocalDate.of(2024, 4, 1));
-        Prestito prestito2 = new Prestito(null, utente1, libro1, rivista1, LocalDate.of(2024, 1, 1), LocalDate.of(2024, 4, 1), LocalDate.of(2024, 5, 1), LocalDate.of(2024, 4, 1));;
+        Utente utente1 = new Utente(null, "Salvatore", "Sale", LocalDate.of(1998, 1, 1), "TESSERA123", null);
+        Utente utente2 = new Utente(null, "Manuel", "Desole", LocalDate.of(1996, 5, 31), "TESSERA452", null);
+        Utente utente3 = new Utente(null, "Giuseppe", "Verdi", LocalDate.of(1996, 5, 31), "TESSERA223", null);
+        bibliotecaService.aggiungiUtente(utente1);
+        bibliotecaService.aggiungiUtente(utente2);
+        bibliotecaService.aggiungiUtente(utente3);
+
+
+        Prestito prestito1 = new Prestito(null, utente1, libro1, rivista1, LocalDate.of(2024, 1, 1), LocalDate.of(2024, 4, 1), LocalDate.of(2024, 5, 1));
+        Prestito prestito2 = new Prestito(null, utente1, libro1, rivista1, LocalDate.of(2024, 1, 1), LocalDate.of(2024, 4, 1), LocalDate.of(2024, 5, 1));;
+        Prestito prestito3 = new Prestito(null, utente2, libro1, rivista2, LocalDate.of(2024, 1, 1), LocalDate.of(2024, 4, 1), LocalDate.of(2024, 5, 1));
+        Prestito prestito4 = new Prestito(null, utente3, libro2, rivista2, LocalDate.of(2024, 1, 1), LocalDate.of(2024, 4, 1), LocalDate.of(2024, 5, 1));
+        Prestito prestito5 = new Prestito(null, utente2, libro2, rivista2, LocalDate.of(2024, 1, 1), LocalDate.of(2024, 4, 1), LocalDate.of(2024, 5, 1));
+
 
         // Aggiungi i prestiti al database
         bibliotecaService.aggiungiPrestito(prestito1);
         bibliotecaService.aggiungiPrestito(prestito2);
+        bibliotecaService.aggiungiPrestito(prestito3);
+        bibliotecaService.aggiungiPrestito(prestito4);
+        bibliotecaService.aggiungiPrestito(prestito5);
 
         // Aggiungi i prestiti all'utente
         utente1.setPrestiti(List.of(prestito1, prestito2));
+        utente2.setPrestiti(List.of(prestito3, prestito5));
+        utente3.setPrestiti(List.of(prestito4));
 
+        bibliotecaService.restituisciPrestito(1L);
+        
         em.getTransaction().commit();
 
         // Esegui ricerche ------------------------------------------------------------
