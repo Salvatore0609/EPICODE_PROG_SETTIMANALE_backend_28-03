@@ -1,0 +1,4 @@
+package it.epicode.pubblicazioni;
+
+public enum Periodicita {
+}
